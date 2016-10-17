@@ -83,7 +83,7 @@ public class StoreAdpr extends BaseAdapter{
                         StoreImpl dao = new StoreImpl(context, new Store());
                         dao.delete(storeId);
 
-                        Toast.makeText(context, "Store and all associated data were deleted." , Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Your store and all associated data were deleted." , Toast.LENGTH_LONG).show();
                     }
                 });
 
