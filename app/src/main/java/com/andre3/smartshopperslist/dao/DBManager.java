@@ -33,6 +33,7 @@ public class DBManager extends SQLiteOpenHelper {
             "CREATE TABLE " + DBTables.category + "(" +
             DBClmns.id + " INTEGER PRIMARY KEY," +
             DBClmns.name + " " + TYPE_STRING+","+
+            DBClmns.listId +" "+ TYPE_INT+","+
             DBClmns.storeId +" "+ TYPE_INT+")";
 
     private static final String SQL_LIST_TBL =

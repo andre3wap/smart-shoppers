@@ -1,15 +1,21 @@
 package com.andre3.smartshopperslist.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andre3.smartshopperslist.R;
 import com.andre3.smartshopperslist.model.Lists;
+import com.andre3.smartshopperslist.model.Store;
+import com.andre3.smartshopperslist.services.ListImpl;
+import com.andre3.smartshopperslist.services.StoreImpl;
 import com.andre3.smartshopperslist.views.PopupBuilder;
 
 import java.util.ArrayList;
@@ -66,12 +72,10 @@ public class ListsAdpr extends BaseAdapter {
         list_optn_btn = (ImageButton)v.findViewById(R.id.list_optn_btn);
         list_optn_btn.setFocusable(false);
 
-        dialog.setLv(getLv());
-
         list_optn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                dialog.setLv(getLv());
                 dialog.newList(true, lists.get(position).getId(), 0).show();
                 System.out.println("Clicked: " +  lists.get(position).getName());
             }
@@ -84,4 +88,11 @@ public class ListsAdpr extends BaseAdapter {
 
         return v;
     }
+    public void refreshEvents() {
+        this.lists.clear();
+        this.lists.addAll(lists);
+        notifyDataSetChanged();
+    }
+
+
 }

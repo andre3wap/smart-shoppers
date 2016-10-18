@@ -80,14 +80,25 @@ public class PopupBuilder extends AppCompatActivity {
 
         // Read data from database
         final Lists lists = new Lists();
-         ListImpl dao = new ListImpl(context, lists);
+        final ListImpl dao = new ListImpl(context, lists);
 
         // If @updateData set to true
         if(updateData){
+
+            // Show delete button on popup
             list_del_btn.setVisibility(View.VISIBLE);
             list_name_et.setText(dao.readById(listId).get(0).getName());
             //TODO: setup date pickers
             ////list_name_et.setText(dao.readById(listId).get(0).getName());
+
+            // Delete selected list
+            list_del_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dao.dialogBox(listId);
+                    dialog.dismiss();
+                }
+            });
 
         }
 
@@ -113,8 +124,10 @@ public class PopupBuilder extends AppCompatActivity {
                         long id = dao.save();
                     }
 
-                    ListsAdpr adapter = new ListsAdpr(context,  dao.readByStoreId(storeId));
-                    lv.setAdapter(adapter);
+
+                    ///TODO: implement a way to refresh created lists
+                    ///ListsAdpr adapter = new ListsAdpr(context,  dao.readByStoreId(storeId));
+                    ///lv.setAdapter(adapter);
 
                       dialog.dismiss();
                 }

@@ -2,8 +2,11 @@ package com.andre3.smartshopperslist.services;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.andre3.smartshopperslist.dao.DBManager;
 import com.andre3.smartshopperslist.enums.DBClmns;
@@ -60,11 +63,11 @@ public class ListImpl {
         return id;
     }
 
-    public long delete(){
+    public long delete(int listId){
 
         SQLiteDatabase sql = db.getReadableDatabase();
 
-        long id = sql.delete(DBTables.lists.toString(), " id ="+ lists.getId(), null);
+        long id = sql.delete(DBTables.lists.toString(), " id ="+ listId, null);
         sql.close();
 
         return id;
@@ -150,6 +153,32 @@ public class ListImpl {
 
 
         return arr;
+    }
+
+    public void dialogBox(final int listId) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setMessage("Are you sure you want to delete this list item? all data associated with it will be removed as well.");
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        delete(listId);
+                        Toast.makeText(context, "Your list and all associated data were deleted." , Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 }
