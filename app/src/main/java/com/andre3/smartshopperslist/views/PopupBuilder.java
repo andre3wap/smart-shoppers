@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.andre3.smartshopperslist.MainActivity;
 import com.andre3.smartshopperslist.R;
+import com.andre3.smartshopperslist.adapters.ListsAdpr;
 import com.andre3.smartshopperslist.adapters.StoreAdpr;
 import com.andre3.smartshopperslist.model.Lists;
 import com.andre3.smartshopperslist.model.Store;
@@ -33,9 +34,9 @@ public class PopupBuilder extends AppCompatActivity {
     String dialogTitle;
     AutoCompleteTextView store_et;
     EditText store_lcn_et, list_name_et;
-    Button store_btn, list_btn;
-    StoreAdpr adapter;
+    Button store_btn, list_btn, list_del_btn;
     ListView lv;
+    BaseAdapter adapter;
 
 
     public PopupBuilder(Context context) {
@@ -54,7 +55,7 @@ public class PopupBuilder extends AppCompatActivity {
         this.lv = lv;
     }
 
-    public StoreAdpr getAdapter() {
+    public BaseAdapter getAdapter() {
         return adapter;
     }
 
@@ -74,6 +75,8 @@ public class PopupBuilder extends AppCompatActivity {
 
         list_name_et = (EditText) dialog.findViewById(R.id.list_name_et);
         list_btn = (Button) dialog.findViewById(R.id.list_btn);
+        list_del_btn = (Button) dialog.findViewById(R.id.list_del_btn);
+        list_del_btn.setVisibility(View.GONE);
 
         // Read data from database
         final Lists lists = new Lists();
@@ -81,7 +84,7 @@ public class PopupBuilder extends AppCompatActivity {
 
         // If @updateData set to true
         if(updateData){
-
+            list_del_btn.setVisibility(View.VISIBLE);
             list_name_et.setText(dao.readById(listId).get(0).getName());
             //TODO: setup date pickers
             ////list_name_et.setText(dao.readById(listId).get(0).getName());
@@ -98,17 +101,22 @@ public class PopupBuilder extends AppCompatActivity {
 
                 }else {
 
-                    System.out.println("Store ID: " + storeId);
-
-
-                    lists.setName(list_name_et.getText().toString());
+                   lists.setName(list_name_et.getText().toString());
                     ///lists.setReminder();
                     lists.setStoreId(storeId);
+                    lists.setId(listId);
                     ListImpl dao = new ListImpl(context, lists);
-                    long id = dao.save();
-                    System.out.println(id);
 
-                    dialog.dismiss();
+                    if(updateData) {
+                        long id = dao.update();
+                    }else{
+                        long id = dao.save();
+                    }
+
+                    ListsAdpr adapter = new ListsAdpr(context,  dao.readByStoreId(storeId));
+                    lv.setAdapter(adapter);
+
+                      dialog.dismiss();
                 }
             }
         });
@@ -165,7 +173,7 @@ public class PopupBuilder extends AppCompatActivity {
                         long id = dao.update();
 
                         // Call adapter to refresh the data
-                        adapter = new StoreAdpr(context, dao.readAll());
+                        StoreAdpr adapter = new StoreAdpr(context, dao.readAll());
                         lv.setAdapter(adapter);
 
                     }else {

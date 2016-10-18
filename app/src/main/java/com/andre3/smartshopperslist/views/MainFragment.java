@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.andre3.smartshopperslist.MainActivity;
@@ -29,6 +30,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MainFragment extends Fragment {
 
+    ListView lv;
+    PopupBuilder dialog;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         forceShowActionBarOverflowMenu();
@@ -39,15 +43,13 @@ public class MainFragment extends Fragment {
 
         //Load fragment and display shopping lists
         View view = inflater.inflate(R.layout.content_main, container, false);
-        ListView lv = (ListView)view.findViewById(R.id.list_name_lv);
+        lv = (ListView)view.findViewById(R.id.list_name_lv);
 
         ListImpl dao  = new ListImpl(getContext(), new Lists() );
 
         ListsAdpr adapter = new ListsAdpr(getContext(), dao.readByStoreId(userStoreId));
-
+        adapter.setLv(lv);
         lv.setAdapter(adapter);
-
-        System.out.println("Store list size" + dao.readByStoreId(userStoreId).size());
 
 
         FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
@@ -59,10 +61,10 @@ public class MainFragment extends Fragment {
                 int userStoreId = prefs.getInt("default_storeId", 0);
 
                 ///Snackbar.make(view, "Replace with your own ", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                PopupBuilder dialog = new PopupBuilder(getContext());
+                dialog = new PopupBuilder(getContext());
+                dialog.setLv(lv);
                 dialog.setDialogTitle("Create new list");
                 dialog.newList(false, 0, userStoreId).show();
-                System.out.println("Float clicked");
             }
         });
 

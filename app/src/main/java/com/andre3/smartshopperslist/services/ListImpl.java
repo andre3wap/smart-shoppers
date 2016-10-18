@@ -53,9 +53,8 @@ public class ListImpl {
 
         values.put(DBClmns.name.toString(), lists.getName());
         values.put(DBClmns.reminder.toString(), lists.getReminder());
-        values.put(DBClmns.storeId.toString(), lists.getStoreId());
 
-        long id = sql.update(DBTables.lists.toString(), values, "WHERE id ="+ lists.getId(), null);
+        long id = sql.update(DBTables.lists.toString(), values, " id ="+ lists.getId(), null);
         sql.close();
 
         return id;
@@ -65,7 +64,7 @@ public class ListImpl {
 
         SQLiteDatabase sql = db.getReadableDatabase();
 
-        long id = sql.delete(DBTables.lists.toString(), "WHERE id ="+ lists.getId(), null);
+        long id = sql.delete(DBTables.lists.toString(), " id ="+ lists.getId(), null);
         sql.close();
 
         return id;
