@@ -11,6 +11,7 @@ public enum  DBClmns {
     storeId,
     price,
     qty,
+    isle,
     unit,
     catId,
     reminder,

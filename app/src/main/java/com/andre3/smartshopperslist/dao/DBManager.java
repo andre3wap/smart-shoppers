@@ -49,6 +49,7 @@ public class DBManager extends SQLiteOpenHelper {
             DBClmns.name + " " + TYPE_STRING+","+
             DBClmns.price + " " + TYPE_STRING+","+
             DBClmns.qty + " " + TYPE_INT+","+
+            DBClmns.isle + " " + TYPE_INT+","+
             DBClmns.unit + " " + TYPE_STRING+","+
             DBClmns.catId + " " + TYPE_INT+","+
             DBClmns.storeId +" "+ TYPE_INT+","+

@@ -19,8 +19,10 @@ import com.andre3.smartshopperslist.MainActivity;
 import com.andre3.smartshopperslist.R;
 import com.andre3.smartshopperslist.adapters.ListsAdpr;
 import com.andre3.smartshopperslist.adapters.StoreAdpr;
+import com.andre3.smartshopperslist.model.Category;
 import com.andre3.smartshopperslist.model.Lists;
 import com.andre3.smartshopperslist.model.Store;
+import com.andre3.smartshopperslist.services.CategoryImpl;
 import com.andre3.smartshopperslist.services.ListImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
 
@@ -33,8 +35,8 @@ public class PopupBuilder extends AppCompatActivity {
     Context context;
     String dialogTitle;
     AutoCompleteTextView store_et;
-    EditText store_lcn_et, list_name_et;
-    Button store_btn, list_btn, list_del_btn;
+    EditText store_lcn_et, list_name_et, cat_name_et;
+    Button store_btn, list_btn, list_del_btn, cat_btn;
     ListView lv;
     BaseAdapter adapter;
 
@@ -66,6 +68,39 @@ public class PopupBuilder extends AppCompatActivity {
 
     /********** Custom dialogs below ************/
 
+    public Dialog newCat(final boolean updateData, boolean cancelAble, final int catId, final int listId, final int storeId){
+        final Dialog dialog = new Dialog(this.context);
+        dialog.setTitle(this.dialogTitle);
+        dialog.setContentView(R.layout.cat_new_dialog);
+
+        if(cancelAble) {
+            dialog.setCancelable(false);
+        }
+
+        cat_name_et = (EditText) dialog.findViewById(R.id.cat_name_et);
+        cat_btn = (Button) dialog.findViewById(R.id.cat_btn);
+
+        cat_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Category cat = new Category();
+                cat.setId(catId);
+                cat.setName(cat_name_et.getText().toString());
+                cat.setListId(listId);
+                cat.setStoreId(storeId);
+
+                CategoryImpl dao = new CategoryImpl(context, cat);
+                dao.save();
+
+                dialog.dismiss();
+            }
+        });
+
+
+
+        return dialog;
+    }
     public Dialog newList( final boolean updateData, final int listId, final int storeId){
 
         final Dialog dialog = new Dialog(this.context);

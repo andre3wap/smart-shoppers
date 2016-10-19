@@ -1,5 +1,8 @@
 package com.andre3.smartshopperslist.views;
 
+import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,11 +13,15 @@ import android.widget.ExpandableListView;
 
 import com.andre3.smartshopperslist.R;
 import com.andre3.smartshopperslist.adapters.ExpandableListAdapter;
+import com.andre3.smartshopperslist.model.Category;
+import com.andre3.smartshopperslist.services.CategoryImpl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by andre3 on 10/18/16.
@@ -26,27 +33,53 @@ public class CategoryFragment extends Fragment{
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    int listId;
+    int userStoreId;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         forceShowActionBarOverflowMenu();
 
         View view = inflater.inflate(R.layout.cat_main_frg, container, false);
+        CategoryImpl header_dao = new CategoryImpl(getContext() , new Category());
+        SharedPreferences prefs = getContext().getSharedPreferences("myPrefs", MODE_PRIVATE);
 
-        int listId = getArguments().getInt("listId");
 
-        //TODO: if user has no category, launch popup for user to create one, or select from presets
+         listId = getArguments().getInt("listId");
+         userStoreId = prefs.getInt("default_storeId", 0);
+
+        // Check if the user has any categories assigned to the selected list, if not; display a popup.
+        if(header_dao.readById(listId).size() <= 0){
+
+            PopupBuilder dialog  = new PopupBuilder(getContext());
+            dialog.newCat(false, true, 0, listId,  userStoreId ).show();
+        }
+
+        //TODO: When creating cats, users should be able to select from presets
 
 
         // get the listview
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
         // preparing list data
-        prepareListData();
+        prepareListData(listId);
 
         listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
+
+
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Dialog to add new item to Category....
+                PopupBuilder dialog  = new PopupBuilder(getContext());
+
+            }
+        });
+
 
         return view;
 
@@ -66,14 +99,10 @@ public class CategoryFragment extends Fragment{
         }
     }
 
-    private void prepareListData() {
+    private void prepareListData(int listId) {
+        int i = 0;
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
-
-        // Adding child data
-        listDataHeader.add("Top 250");
-        listDataHeader.add("Now Showing");
-        listDataHeader.add("Coming Soon..");
 
         // Adding child data
         List<String> top250 = new ArrayList<String>();
@@ -85,24 +114,20 @@ public class CategoryFragment extends Fragment{
         top250.add("The Dark Knight");
         top250.add("12 Angry Men");
 
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
 
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
 
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
+
+        CategoryImpl header_dao = new CategoryImpl(getContext() , new Category());
+
+        for(Category temp : header_dao.readById(listId)){
+
+            listDataHeader.add(temp.getName());
+
+            listDataChild.put(listDataHeader.get(i), top250); // Header, Child data
+
+            i++;
+        }
+
     }
 }
 

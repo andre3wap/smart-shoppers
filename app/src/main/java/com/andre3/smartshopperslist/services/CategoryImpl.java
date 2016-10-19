@@ -61,7 +61,7 @@ public class CategoryImpl {
     public ArrayList<Category> readById(int listId){
         ArrayList<Category> arr = new ArrayList<Category>();
 
-        String query = "SELECT * FROM"+ DBTables.category + "WHERE id =" + listId;
+        String query = "SELECT * FROM "+ DBTables.category + " WHERE listId =" + listId;
         SQLiteDatabase sql = db.getReadableDatabase();
 
 
@@ -87,7 +87,7 @@ public class CategoryImpl {
     public ArrayList<Category> readAll(){
         ArrayList<Category> arr = new ArrayList<Category>();
 
-        String query = "SELECT * FROM"+ DBTables.category;
+        String query = "SELECT * FROM "+ DBTables.category;
         SQLiteDatabase sql = db.getReadableDatabase();
 
 
