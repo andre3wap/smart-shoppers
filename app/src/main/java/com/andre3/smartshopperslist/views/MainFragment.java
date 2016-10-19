@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -32,6 +33,7 @@ public class MainFragment extends Fragment {
 
     ListView lv;
     PopupBuilder dialog;
+    ListImpl dao;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -39,17 +41,34 @@ public class MainFragment extends Fragment {
 
         //Get user's default storeId
         SharedPreferences prefs = getContext().getSharedPreferences("myPrefs", MODE_PRIVATE);
-         int userStoreId = prefs.getInt("default_storeId", 0);
+         final int userStoreId = prefs.getInt("default_storeId", 0);
 
         //Load fragment and display shopping lists
         View view = inflater.inflate(R.layout.content_main, container, false);
         lv = (ListView)view.findViewById(R.id.list_name_lv);
 
-        ListImpl dao  = new ListImpl(getContext(), new Lists() );
+        dao  = new ListImpl(getContext(), new Lists() );
 
         ListsAdpr adapter = new ListsAdpr(getContext(), dao.readByStoreId(userStoreId));
         adapter.setLv(lv);
         lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                Bundle bd = new Bundle();
+                CategoryFragment fr = new CategoryFragment();
+
+                bd.putInt("listId", dao.readByStoreId(userStoreId).get(position).getId());
+                fr.setArguments(bd);
+
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
+
+            }
+        });
+
 
 
         FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);

@@ -14,17 +14,6 @@
         android:title="@string/action_edit_store"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_add_category"
-        android:orderInCategory="100"
-        android:title="@string/action_add_category"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_edit_cat"
-        android:orderInCategory="100"
-        android:title="@string/action_edit_cat"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/spinner"

@@ -17,6 +17,7 @@ import com.andre3.smartshopperslist.model.Store;
 import com.andre3.smartshopperslist.services.ListImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
 import com.andre3.smartshopperslist.views.PopupBuilder;
+import com.andre3.smartshopperslist.views.StoreEditFragment;
 
 import java.util.ArrayList;
 import java.util.List;

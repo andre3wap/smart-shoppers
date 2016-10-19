@@ -13,7 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
+
+import com.andre3.smartshopperslist.model.Category;
 import com.andre3.smartshopperslist.model.Store;
+import com.andre3.smartshopperslist.services.CategoryImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
 import com.andre3.smartshopperslist.views.StoreEditFragment;
 import com.andre3.smartshopperslist.views.MainFragment;
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             // Launch popup for user to create first store
             pb.setDialogTitle("Create Store");
             pb.newStore(false, true, 0).show();
+
         }
 
 
@@ -113,10 +117,6 @@ public class MainActivity extends AppCompatActivity {
             StoreEditFragment fr = new StoreEditFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_edit").addToBackStack(null).commit();
 
-            return true;
-        }
-        if (id == R.id.action_add_category) {
-            Toast.makeText(getApplicationContext(), "Add section", Toast.LENGTH_LONG).show();
             return true;
         }
 
