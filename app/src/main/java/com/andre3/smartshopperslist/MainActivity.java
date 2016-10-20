@@ -18,6 +18,7 @@ import com.andre3.smartshopperslist.model.Category;
 import com.andre3.smartshopperslist.model.Store;
 import com.andre3.smartshopperslist.services.CategoryImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
+import com.andre3.smartshopperslist.views.CatEditFragment;
 import com.andre3.smartshopperslist.views.StoreEditFragment;
 import com.andre3.smartshopperslist.views.MainFragment;
 import com.andre3.smartshopperslist.views.PopupBuilder;
@@ -116,6 +117,13 @@ public class MainActivity extends AppCompatActivity {
 
             StoreEditFragment fr = new StoreEditFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_edit").addToBackStack(null).commit();
+
+            return true;
+        }
+        if (id == R.id.action_edit_cat) {
+
+            CatEditFragment fr = new CatEditFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "cat_edit").addToBackStack(null).commit();
 
             return true;
         }
