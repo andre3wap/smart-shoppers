@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.andre3.smartshopperslist.MainActivity;
 import com.andre3.smartshopperslist.R;
+import com.andre3.smartshopperslist.adapters.CategoryAdpr;
 import com.andre3.smartshopperslist.adapters.ListsAdpr;
 import com.andre3.smartshopperslist.adapters.StoreAdpr;
 import com.andre3.smartshopperslist.model.Category;
@@ -68,6 +70,14 @@ public class PopupBuilder extends AppCompatActivity {
 
     /********** Custom dialogs below ************/
 
+    public Dialog newItem(final boolean updateData, final int listId, final int catId,  final int storeId){
+        final Dialog dialog = new Dialog(this.context);
+        dialog.setTitle(this.dialogTitle);
+        dialog.setContentView(R.layout.item_new_dialog);
+
+
+        return dialog;
+    }
     public Dialog newCat(final boolean updateData, boolean cancelAble, final int catId, final int listId, final int storeId){
         final Dialog dialog = new Dialog(this.context);
         dialog.setTitle(this.dialogTitle);
@@ -80,6 +90,12 @@ public class PopupBuilder extends AppCompatActivity {
         cat_name_et = (EditText) dialog.findViewById(R.id.cat_name_et);
         cat_btn = (Button) dialog.findViewById(R.id.cat_btn);
 
+        /// Get clicked cat name from DB
+        if(updateData){
+            CategoryImpl dao = new CategoryImpl(context, new Category());
+            cat_name_et.setText(dao.readByCatId(catId).get(0).getName());
+        }
+
         cat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +107,15 @@ public class PopupBuilder extends AppCompatActivity {
                 cat.setStoreId(storeId);
 
                 CategoryImpl dao = new CategoryImpl(context, cat);
-                dao.save();
+                if(updateData){
+                    dao.update();
+                    adapter = new CategoryAdpr(context, dao.readByStoreId(storeId));
+                    getLv().setAdapter(adapter);
+                }else {
+                    dao.save();
+                }
+
+
 
                 dialog.dismiss();
             }
@@ -102,7 +126,7 @@ public class PopupBuilder extends AppCompatActivity {
         return dialog;
     }
     public Dialog newList( final boolean updateData, final int listId, final int storeId){
-
+//TODO: consider moving the delete list button from the popup and put it in the Adapter / Fragment
         final Dialog dialog = new Dialog(this.context);
         dialog.setTitle(this.dialogTitle);
         dialog.setContentView(R.layout.list_new_dialog);

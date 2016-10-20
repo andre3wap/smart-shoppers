@@ -1,14 +1,20 @@
 package com.andre3.smartshopperslist.adapters;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.andre3.smartshopperslist.R;
+import com.andre3.smartshopperslist.views.CatEditFragment;
 import com.andre3.smartshopperslist.views.MainFragment;
 
 import java.util.HashMap;
@@ -92,11 +98,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+        ImageButton list_head_btn = (ImageButton)convertView.findViewById(R.id.list_head_btn);
+        list_head_btn.setFocusable(false);
+
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
+        list_head_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            System.out.println("Group clicked");
+                CatEditFragment fr = new CatEditFragment();
+                ((FragmentActivity) _context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack("test_back").commit();
+
+            }
+        });
 
         return convertView;
     }

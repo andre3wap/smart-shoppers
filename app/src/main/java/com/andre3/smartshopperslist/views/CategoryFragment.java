@@ -76,6 +76,7 @@ public class CategoryFragment extends Fragment{
 
                 // Dialog to add new item to Category....
                 PopupBuilder dialog  = new PopupBuilder(getContext());
+                dialog.newItem(false,listId, 0, userStoreId).show();
 
             }
         });

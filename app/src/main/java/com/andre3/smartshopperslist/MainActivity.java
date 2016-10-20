@@ -120,13 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         }
-        if (id == R.id.action_edit_cat) {
-
-            CatEditFragment fr = new CatEditFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "cat_edit").addToBackStack(null).commit();
-
-            return true;
-        }
 
 
         return super.onOptionsItemSelected(item);

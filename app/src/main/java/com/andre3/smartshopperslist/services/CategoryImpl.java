@@ -85,6 +85,33 @@ public class CategoryImpl {
         return arr;
     }
 
+    public ArrayList<Category> readByCatId(int catId){
+        ArrayList<Category> arr = new ArrayList<Category>();
+
+        String query = "SELECT * FROM "+ DBTables.category + " WHERE id =" + catId;
+        SQLiteDatabase sql = db.getReadableDatabase();
+
+
+        Cursor c = sql.rawQuery(query, null);
+
+        if(c.moveToFirst()){
+
+            do{
+                Category cat = new Category();
+                cat.setId(c.getInt(c.getColumnIndex(DBClmns.id.toString())));
+                cat.setName(c.getString(c.getColumnIndex(DBClmns.name.toString())));
+                cat.setListId(c.getInt(c.getColumnIndex(DBClmns.listId.toString())));
+                cat.setStoreId(c.getInt(c.getColumnIndex(DBClmns.storeId.toString())));
+
+                arr.add(cat);
+            }while(c.moveToNext());
+
+        }
+
+        sql.close();
+        return arr;
+    }
+
     public ArrayList<Category> readByStoreId(int storeId){
         ArrayList<Category> arr = new ArrayList<Category>();
 

@@ -41,6 +41,8 @@ public class MainFragment extends Fragment {
 
         //Get user's default storeId
         SharedPreferences prefs = getContext().getSharedPreferences("myPrefs", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = getContext().getSharedPreferences("myPrefs", MODE_PRIVATE).edit();
+
          final int userStoreId = prefs.getInt("default_storeId", 0);
 
         //Load fragment and display shopping lists
@@ -57,12 +59,14 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                 Bundle bd = new Bundle();
                 CategoryFragment fr = new CategoryFragment();
 
                 bd.putInt("listId", dao.readByStoreId(userStoreId).get(position).getId());
                 fr.setArguments(bd);
+
+                editor.putInt("active_listId", dao.readByStoreId(userStoreId).get(position).getId() );
+                editor.commit();
 
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
 
