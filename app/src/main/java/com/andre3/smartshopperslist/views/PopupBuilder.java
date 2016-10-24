@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andre3.smartshopperslist.MainActivity;
@@ -34,6 +36,9 @@ import com.andre3.smartshopperslist.services.CategoryImpl;
 import com.andre3.smartshopperslist.services.ItemImpl;
 import com.andre3.smartshopperslist.services.ListImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
+import com.andre3.smartshopperslist.tools.DatePickerFrg;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by andre3 on 10/13/16.
@@ -45,10 +50,11 @@ public class PopupBuilder extends AppCompatActivity {
     String dialogTitle;
     AutoCompleteTextView store_et, name_et;
     EditText store_lcn_et, list_name_et, cat_name_et;
-    EditText price_et, isle_et, qty_et, unit_et;
+    EditText price_et, isle_et, qty_et, unit_et, list_rem_et;
     Spinner spinner2, unit_sp;
-    Button store_btn, list_btn, list_del_btn, cat_btn, item_save_btn;
+    Button store_btn, list_btn, list_del_btn, cat_btn, item_save_btn, list_rem_btn;
     ListView lv;
+    TextView list_rem_tv;
     BaseAdapter adapter;
     AutoCompleteImpl autoComp;
     int inCart = 0;
@@ -250,6 +256,8 @@ public class PopupBuilder extends AppCompatActivity {
 
 
         list_name_et = (EditText) dialog.findViewById(R.id.list_name_et);
+        list_rem_btn = (Button)dialog.findViewById(R.id.list_rem_btn);
+        list_rem_tv = (TextView)dialog.findViewById(R.id.list_rem_tv);
         list_btn = (Button) dialog.findViewById(R.id.list_btn);
         list_del_btn = (Button) dialog.findViewById(R.id.list_del_btn);
         list_del_btn.setVisibility(View.GONE);
@@ -264,9 +272,10 @@ public class PopupBuilder extends AppCompatActivity {
 
             // Show delete button on popup
             list_del_btn.setVisibility(View.VISIBLE);
+
+            // Pre populate fields
             list_name_et.setText(dao.readById(listId).get(0).getName());
-            //TODO: setup date pickers
-            ////list_name_et.setText(dao.readById(listId).get(0).getName());
+            list_rem_tv.setText(dao.readById(listId).get(0).getReminder());
 
             // Delete selected list
             list_del_btn.setOnClickListener(new View.OnClickListener() {
@@ -280,6 +289,14 @@ public class PopupBuilder extends AppCompatActivity {
             });
 
         }
+        list_rem_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    DialogFragment newFragment = new DatePickerFrg(dialog);
+                    newFragment.show( ((FragmentActivity) context).getSupportFragmentManager(), "datePicker");
+            }
+        });
 
         list_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,7 +309,7 @@ public class PopupBuilder extends AppCompatActivity {
                 }else {
 
                    lists.setName(list_name_et.getText().toString());
-                    ///lists.setReminder();
+                    lists.setReminder(list_rem_tv.getText().toString());
                     lists.setStoreId(storeId);
                     lists.setId(listId);
                     ListImpl dao = new ListImpl(context, lists);

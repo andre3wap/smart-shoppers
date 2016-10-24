@@ -3,6 +3,7 @@ package com.andre3.smartshopperslist.views;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.andre3.smartshopperslist.R;
 import com.andre3.smartshopperslist.adapters.ListsAdpr;
 import com.andre3.smartshopperslist.model.Lists;
 import com.andre3.smartshopperslist.services.ListImpl;
+import com.andre3.smartshopperslist.tools.DatePickerFrg;
 
 import java.lang.reflect.Field;
 
@@ -69,7 +71,7 @@ public class MainFragment extends Fragment {
                 fr.setArguments(bd);
 
                 editor.putInt("active_listId", dao.readByStoreId(userStoreId).get(position).getId() );
-                editor.commit();
+                editor.apply();
 
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
 
@@ -108,6 +110,7 @@ public class MainFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 
 
 }

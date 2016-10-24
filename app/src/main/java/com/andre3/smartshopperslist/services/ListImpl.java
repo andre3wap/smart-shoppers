@@ -41,6 +41,7 @@ public class ListImpl {
         values.put(DBClmns.name.toString(), lists.getName());
         values.put(DBClmns.reminder.toString(), lists.getReminder());
         values.put(DBClmns.storeId.toString(), lists.getStoreId());
+        values.put(DBClmns.reminder.toString(), lists.getReminder());
 
         long id = sql.insert(DBTables.lists.toString(), null, values);
         sql.close();

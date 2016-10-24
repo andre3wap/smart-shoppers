@@ -3,37 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/lists_icon"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:id="@+id/imageView2"
-        android:layout_alignBottom="@+id/lists_tv"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/hori_dots"
-        android:id="@+id/list_optn_btn"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="11dp"
-        android:layout_alignTop="@+id/lists_tv"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
     <TextView
         android:text="loading...."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lists_tv"
-        android:paddingBottom="20dp"
+        android:paddingBottom="10dp"
         android:textSize="16sp"
         android:paddingTop="20dp"
         android:layout_alignParentTop="true"
@@ -43,11 +18,46 @@
         android:layout_marginStart="13dp" />
 
     <TextView
+        android:text="No Reminder set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_rem_tv"
+        android:layout_below="@+id/lists_tv"
+        android:layout_alignLeft="@+id/lists_tv"
+        android:layout_alignStart="@+id/lists_tv"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/lists_icon"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:id="@+id/imageView2"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/hori_dots"
+        android:id="@+id/list_optn_btn"
+        android:layout_marginRight="23dp"
+        android:layout_marginEnd="23dp"
+        android:layout_alignTop="@+id/list_itm_count"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
         android:text="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginEnd="28dp"
         android:id="@+id/list_itm_count"
         android:layout_alignBaseline="@+id/lists_tv"
         android:layout_alignBottom="@+id/lists_tv"

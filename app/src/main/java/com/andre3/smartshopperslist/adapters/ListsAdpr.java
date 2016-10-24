@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class ListsAdpr extends BaseAdapter {
     ImageButton list_optn_btn;
     PopupBuilder dialog;
     ListView lv;
+    TextView lists_tv, list_itm_count, list_rem_tv;
 
     public ListsAdpr(Context context, List<Lists> lists) {
         this.context = context;
@@ -87,11 +89,13 @@ public class ListsAdpr extends BaseAdapter {
 
         ItemImpl dao = new ItemImpl(new Item(), context);
 
-        TextView lists_tv = (TextView)v.findViewById(R.id.lists_tv);
-        TextView list_itm_count = (TextView)v.findViewById(R.id.list_itm_count);
+         lists_tv = (TextView)v.findViewById(R.id.lists_tv);
+         list_itm_count = (TextView)v.findViewById(R.id.list_itm_count);
+         list_rem_tv = (TextView)v.findViewById(R.id.list_rem_tv);
 
-        lists_tv.setText(lists.get(position).getName());
-        list_itm_count.setText("( " +dao.readByListId(lists.get(position).getId()).size()+ " / " +dao.readByListIdAll(lists.get(position).getId()).size()+" )");
+         lists_tv.setText(lists.get(position).getName());
+         list_itm_count.setText("( " +dao.readByListId(lists.get(position).getId()).size()+ " / " +dao.readByListIdAll(lists.get(position).getId()).size()+" )");
+         list_rem_tv.setText("Reminder Set: " +lists.get(position).getReminder() );
 
 
         return v;
