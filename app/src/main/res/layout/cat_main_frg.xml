@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/lvExp" />
+        android:id="@+id/lvExp"
+        android:layout_marginTop="40dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -21,6 +22,16 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
+    <TextView
+        android:text="My Categories:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:textSize="17sp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="normal|bold" />
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -3,17 +3,21 @@ package com.andre3.smartshopperslist.views;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.andre3.smartshopperslist.MainActivity;
@@ -22,9 +26,12 @@ import com.andre3.smartshopperslist.adapters.CategoryAdpr;
 import com.andre3.smartshopperslist.adapters.ListsAdpr;
 import com.andre3.smartshopperslist.adapters.StoreAdpr;
 import com.andre3.smartshopperslist.model.Category;
+import com.andre3.smartshopperslist.model.Item;
 import com.andre3.smartshopperslist.model.Lists;
 import com.andre3.smartshopperslist.model.Store;
+import com.andre3.smartshopperslist.services.AutoCompleteImpl;
 import com.andre3.smartshopperslist.services.CategoryImpl;
+import com.andre3.smartshopperslist.services.ItemImpl;
 import com.andre3.smartshopperslist.services.ListImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
 
@@ -36,15 +43,20 @@ public class PopupBuilder extends AppCompatActivity {
 
     Context context;
     String dialogTitle;
-    AutoCompleteTextView store_et;
+    AutoCompleteTextView store_et, name_et;
     EditText store_lcn_et, list_name_et, cat_name_et;
-    Button store_btn, list_btn, list_del_btn, cat_btn;
+    EditText price_et, isle_et, qty_et, unit_et;
+    Spinner spinner2, unit_sp;
+    Button store_btn, list_btn, list_del_btn, cat_btn, item_save_btn;
     ListView lv;
     BaseAdapter adapter;
+    AutoCompleteImpl autoComp;
+    int inCart = 0;
 
 
     public PopupBuilder(Context context) {
         this.context = context;
+        this.autoComp = new AutoCompleteImpl();
     }
 
     public void setDialogTitle(String dialogTitle) {
@@ -70,16 +82,112 @@ public class PopupBuilder extends AppCompatActivity {
 
     /********** Custom dialogs below ************/
 
-    public Dialog newItem(final boolean updateData, final int listId, final int catId,  final int storeId){
-        final Dialog dialog = new Dialog(this.context);
-        dialog.setTitle(this.dialogTitle);
+    public Dialog newItem(final boolean updateData, final int listId, final int catId,  final int storeId, final int id){
+        final Dialog dialog = new Dialog(this.context,  R.style.DialogTheme);
         dialog.setContentView(R.layout.item_new_dialog);
+
+        CategoryImpl dao = new CategoryImpl( context , new Category());
+
+        name_et = (AutoCompleteTextView)dialog.findViewById(R.id.name_et);
+        price_et = (EditText)dialog.findViewById(R.id.price_et);
+        isle_et = (EditText)dialog.findViewById(R.id.isle_et);
+        qty_et = (EditText)dialog.findViewById(R.id.qty_et);
+        unit_sp = (Spinner)dialog.findViewById(R.id.spinner4);
+
+        spinner2 = (Spinner)dialog.findViewById(R.id.spinner2);
+
+        if(updateData){
+
+
+            ItemImpl item_dao = new ItemImpl(new Item(), context);
+
+            String price = String.valueOf(item_dao.readById(id).get(0).getPrice());
+            String qty = String.valueOf(item_dao.readById(id).get(0).getQty());
+
+            name_et.setText(item_dao.readById(id).get(0).getName());
+            price_et.setText(price);
+            isle_et.setText(item_dao.readById(id).get(0).getIsle());
+            qty_et.setText(qty);
+        }
+
+        // Setup autocomplete EditText
+        ArrayAdapter autocompletetextAdapter = new ArrayAdapter<String>( context,  android.R.layout.simple_dropdown_item_1line, autoComp.itemsAuto());
+        name_et.setAdapter(autocompletetextAdapter);
+
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
+                context, android.R.layout.simple_spinner_item, autoComp.unitsAuto());
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unit_sp.setAdapter(adapter2);
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                context, android.R.layout.simple_spinner_item, dao.readNames(listId));
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(adapter);
+
+
+
+        item_save_btn = (Button)dialog.findViewById(R.id.item_save_btn);
+
+        item_save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selected_cat = spinner2.getSelectedItem().toString();
+                String selected_unit = unit_sp.getSelectedItem().toString();
+                final String[] s_cat = selected_cat.split("-");
+
+                if(name_et.getText().toString().isEmpty() || Float.parseFloat( price_et.getText().toString())< 0 || Integer.parseInt(qty_et.getText().toString()) <=0 || isle_et.getText().toString().isEmpty()){
+
+                    Toast.makeText(context, "All fields are required", Toast.LENGTH_LONG).show();
+
+                }else {
+                    Item items = new Item();
+                    items.setId(id);
+                    items.setName(name_et.getText().toString());
+                    items.setPrice(Float.parseFloat(price_et.getText().toString()));
+                    items.setIsle(isle_et.getText().toString());
+                    items.setQty(Integer.parseInt(qty_et.getText().toString()));
+                    items.setUnit(selected_unit);
+                    items.setListId(listId);
+                    items.setCatId(Integer.parseInt(s_cat[0]));
+                    items.setStoreId(storeId);
+                    items.setInCart(inCart);
+
+                    ItemImpl dao = new ItemImpl(items, context);
+                    if(updateData)
+                    {
+                        dao.update();
+                    }else{
+                        dao.save();
+                    }
+
+
+                    dialog.dismiss();
+
+                }
+
+
+                CategoryFragment fr = new CategoryFragment();
+                Bundle bd = new Bundle();
+
+                bd.putInt("listId", listId);
+                fr.setArguments(bd);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
+            }
+        });
+
+
+
 
 
         return dialog;
     }
     public Dialog newCat(final boolean updateData, boolean cancelAble, final int catId, final int listId, final int storeId){
-        final Dialog dialog = new Dialog(this.context);
+        final Dialog dialog = new Dialog(this.context, R.style.DialogTheme);
         dialog.setTitle(this.dialogTitle);
         dialog.setContentView(R.layout.cat_new_dialog);
 
@@ -113,6 +221,15 @@ public class PopupBuilder extends AppCompatActivity {
                     getLv().setAdapter(adapter);
                 }else {
                     dao.save();
+                    CategoryFragment fr = new CategoryFragment();
+
+                    Bundle bd = new Bundle();
+
+                    bd.putInt("listId", listId);
+                    fr.setArguments(bd);
+
+                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
+
                 }
 
 
@@ -127,7 +244,7 @@ public class PopupBuilder extends AppCompatActivity {
     }
     public Dialog newList( final boolean updateData, final int listId, final int storeId){
 //TODO: consider moving the delete list button from the popup and put it in the Adapter / Fragment
-        final Dialog dialog = new Dialog(this.context);
+        final Dialog dialog = new Dialog(this.context, R.style.DialogTheme);
         dialog.setTitle(this.dialogTitle);
         dialog.setContentView(R.layout.list_new_dialog);
 
@@ -140,6 +257,7 @@ public class PopupBuilder extends AppCompatActivity {
         // Read data from database
         final Lists lists = new Lists();
         final ListImpl dao = new ListImpl(context, lists);
+
 
         // If @updateData set to true
         if(updateData){
@@ -154,6 +272,8 @@ public class PopupBuilder extends AppCompatActivity {
             list_del_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    // Delete List
                     dao.dialogBox(listId);
                     dialog.dismiss();
                 }
@@ -184,11 +304,11 @@ public class PopupBuilder extends AppCompatActivity {
                     }
 
 
-                    ///TODO: implement a way to refresh created lists
-                    ///ListsAdpr adapter = new ListsAdpr(context,  dao.readByStoreId(storeId));
-                    ///lv.setAdapter(adapter);
+                    MainFragment fr = new MainFragment();
+                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
 
-                      dialog.dismiss();
+
+                    dialog.dismiss();
                 }
             }
         });
@@ -201,7 +321,7 @@ public class PopupBuilder extends AppCompatActivity {
     public Dialog newStore(final boolean updateData , Boolean cancelable, final int storeId){
 
 
-        final Dialog dialog = new Dialog(this.context);
+        final Dialog dialog = new Dialog(this.context, R.style.DialogTheme);
         dialog.setTitle(this.dialogTitle);
 
 
@@ -213,6 +333,11 @@ public class PopupBuilder extends AppCompatActivity {
         store_lcn_et = (EditText)dialog.findViewById(R.id.store_lcn_et);
         store_et = (AutoCompleteTextView)dialog.findViewById(R.id.store_et);
         store_btn = (Button)dialog.findViewById(R.id.store_btn);
+
+
+        ArrayAdapter autocompletetextAdapter = new ArrayAdapter<String>( context,  android.R.layout.simple_dropdown_item_1line, autoComp.storeAuto());
+        store_et.setAdapter(autocompletetextAdapter);
+
 
         // Read data from database
         final Store store = new Store();
@@ -230,7 +355,7 @@ public class PopupBuilder extends AppCompatActivity {
 
                 if(store_et.getText().toString().isEmpty()){
 
-                    Toast.makeText(context, "Field should not be left blank", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Store name should not be left blank", Toast.LENGTH_LONG).show();
 
                 }else{
 
@@ -250,9 +375,9 @@ public class PopupBuilder extends AppCompatActivity {
 
                     }else {
 
+                        long id = dao.save();
                         Intent intent = new Intent(context, MainActivity.class);
                         context.startActivity(intent);
-                        long id = dao.save();
 
                     }
                    dialog.dismiss();

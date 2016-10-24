@@ -13,9 +13,11 @@ import android.widget.Toast;
 
 import com.andre3.smartshopperslist.R;
 import com.andre3.smartshopperslist.model.Category;
+import com.andre3.smartshopperslist.model.Item;
 import com.andre3.smartshopperslist.model.Lists;
 import com.andre3.smartshopperslist.model.Store;
 import com.andre3.smartshopperslist.services.CategoryImpl;
+import com.andre3.smartshopperslist.services.ItemImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
 
 import java.util.List;
@@ -56,7 +58,7 @@ public class CategoryAdpr extends BaseAdapter {
         View v = View.inflate(context, R.layout.cat_adpr_view, null);
 
         TextView cat_edit_tv = (TextView)v.findViewById(R.id.cat_tv);
-        ImageButton cat_del_btn = (ImageButton)v.findViewById(R.id.cat_del_btn);
+        final ImageButton cat_del_btn = (ImageButton)v.findViewById(R.id.cat_del_btn);
         cat_del_btn.setFocusable(false);
 
 
@@ -66,8 +68,9 @@ public class CategoryAdpr extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                // Pass category ID
+                // Pass category ID for deletion
                dialogBox(cat.get(position).getId());
+
             }
         });
 
@@ -88,6 +91,14 @@ public class CategoryAdpr extends BaseAdapter {
                         // Grab database layer to perform delete operation
                         CategoryImpl dao = new CategoryImpl(context, new Category());
                         dao.delete(catId);
+
+
+                        // Soft delete items
+                        Item item = new Item();
+                        item.setCatId(catId);
+                        ItemImpl item_dao = new ItemImpl(item, context);
+                        item_dao.softDeleteCat();
+
 
                         Toast.makeText(context, "Your category and all associated data were deleted." , Toast.LENGTH_LONG).show();
                     }

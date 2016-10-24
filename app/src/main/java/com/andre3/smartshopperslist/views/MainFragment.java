@@ -1,11 +1,14 @@
 package com.andre3.smartshopperslist.views;
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,5 +108,6 @@ public class MainFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 
 }

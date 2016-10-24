@@ -17,6 +17,16 @@ public class Item {
     int storeId;
     int listId;
     int time;
+    int inCart;
+
+
+    public int getInCart() {
+        return inCart;
+    }
+
+    public void setInCart(int inCart) {
+        this.inCart = inCart;
+    }
 
     public int getId() {
         return id;

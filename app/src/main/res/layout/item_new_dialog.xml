@@ -1,69 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="match_parent"
-    android:paddingTop="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/grocerybag"
+        android:scaleType="center"
+        android:background="@color/dialogColors"
+        android:id="@+id/imageView3" />
+
+
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/name_et"
+        android:hint="Item Name..."
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/imageView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:paddingLeft="10dp"
+        android:stretchColumns="*"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/name_et"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp">
+
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent" >
 
-            <EditText
-                android:layout_width="wrap_content"
+            <Spinner
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="Item name"
-                android:ems="10"
-                android:id="@+id/name_et" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="Price per item"
-                android:ems="10"
-                android:id="@+id/price_et" />
+                android:id="@+id/spinner2"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent" >
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="item price"
+                android:ems="10"
+                android:id="@+id/price_et"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Isle"
+                android:ems="10"
+                android:id="@+id/isle_et"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent" >
+
+            <EditText
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:hint="Quantity"
                 android:ems="10"
                 android:id="@+id/qty_et" />
 
-            <EditText
-                android:layout_width="wrap_content"
+            <Spinner
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="Unit"
-                android:ems="10"
-                android:id="@+id/unit_et" />
+                android:id="@+id/spinner4" />
+
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent" >
 
-            <EditText
-                android:layout_width="wrap_content"
+            <Button
+                android:text="Save"
+                android:layout_width="0dip"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="Isle"
-                android:ems="10"
-                android:id="@+id/isle_et" />
+                android:id="@+id/item_save_btn" />
         </TableRow>
     </TableLayout>
 </RelativeLayout>

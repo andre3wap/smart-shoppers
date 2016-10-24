@@ -12,6 +12,7 @@ import com.andre3.smartshopperslist.model.Category;
 import com.andre3.smartshopperslist.model.Lists;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ODBBROW on 10/18/2016.
@@ -173,6 +174,19 @@ public class CategoryImpl {
 
         sql.close();
         return id;
+    }
+
+    public List<String> readNames(int listId){
+
+        List<String> spinnerArray =  new ArrayList<String>();
+        for(Category temp : readById(listId)){
+
+            spinnerArray.add(temp.getId() +"-" +temp.getName().toString());
+
+        }
+
+        return spinnerArray;
+
     }
 
 }

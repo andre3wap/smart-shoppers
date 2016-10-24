@@ -20,32 +20,32 @@ public class DBManager extends SQLiteOpenHelper {
     // Value Types
     private static String TYPE_INT = "int";
     private static String TYPE_STRING = "String";
-
+    private static String TYPE_BOOLEAN = "Boolean";
 
     // Build Queries
     private static final String SQL_STORE_TBL =
             "CREATE TABLE " + DBTables.store + "(" +
-            DBClmns.id + " INTEGER PRIMARY KEY," +
+            DBClmns.id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             DBClmns.name + " " + TYPE_STRING+", "+
             DBClmns.location +" "+ TYPE_STRING+")";
 
     private static final String SQL_CAT_TBL =
             "CREATE TABLE " + DBTables.category + "(" +
-            DBClmns.id + " INTEGER PRIMARY KEY," +
+            DBClmns.id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             DBClmns.name + " " + TYPE_STRING+","+
             DBClmns.listId +" "+ TYPE_INT+","+
             DBClmns.storeId +" "+ TYPE_INT+")";
 
     private static final String SQL_LIST_TBL =
             "CREATE TABLE " + DBTables.lists + "(" +
-            DBClmns.id + " INTEGER PRIMARY KEY," +
+            DBClmns.id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             DBClmns.name + " " + TYPE_STRING+","+
             DBClmns.storeId +" "+ TYPE_INT+","+
             DBClmns.reminder +" "+ TYPE_STRING+")";
 
     private static final String SQL_ITEMS_TBL =
             "CREATE TABLE " + DBTables.items + "(" +
-            DBClmns.id + " INTEGER PRIMARY KEY," +
+            DBClmns.id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             DBClmns.name + " " + TYPE_STRING+","+
             DBClmns.price + " " + TYPE_STRING+","+
             DBClmns.qty + " " + TYPE_INT+","+
@@ -53,6 +53,7 @@ public class DBManager extends SQLiteOpenHelper {
             DBClmns.unit + " " + TYPE_STRING+","+
             DBClmns.catId + " " + TYPE_INT+","+
             DBClmns.storeId +" "+ TYPE_INT+","+
+            DBClmns.inCart +" "+ TYPE_INT+","+
             DBClmns.listId +" "+ TYPE_INT+","+
             DBClmns.time +" "+ TYPE_STRING+")";
 

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.andre3.smartshopperslist.dao.DBManager;
 import com.andre3.smartshopperslist.enums.DBClmns;
 import com.andre3.smartshopperslist.enums.DBTables;
+import com.andre3.smartshopperslist.model.Item;
 import com.andre3.smartshopperslist.model.Lists;
 
 import java.util.ArrayList;
@@ -164,7 +165,16 @@ public class ListImpl {
 
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+
+                        // Hard delete
                         delete(listId);
+
+                        // Soft delete items
+                        Item item = new Item();
+                        item.setListId(listId);
+                        final ItemImpl itemDao = new ItemImpl(item, context);
+                        itemDao.softDelete();
+
                         Toast.makeText(context, "Your list and all associated data were deleted." , Toast.LENGTH_LONG).show();
                     }
                 });

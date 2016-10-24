@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 import com.andre3.smartshopperslist.R;
 import com.andre3.smartshopperslist.adapters.ExpandableListAdapter;
 import com.andre3.smartshopperslist.model.Category;
+import com.andre3.smartshopperslist.model.Item;
 import com.andre3.smartshopperslist.services.CategoryImpl;
+import com.andre3.smartshopperslist.services.ItemImpl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -69,6 +72,23 @@ public class CategoryFragment extends Fragment{
         expListView.setAdapter(listAdapter);
 
 
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+
+                System.out.println("Child " + listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition) );
+
+                String[] child_arr = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).split("-");
+
+                PopupBuilder dialog  = new PopupBuilder(getContext());
+                dialog.newItem(true,listId, 0, userStoreId, Integer.parseInt(child_arr[0].trim())).show();
+
+
+                return false;
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +96,7 @@ public class CategoryFragment extends Fragment{
 
                 // Dialog to add new item to Category....
                 PopupBuilder dialog  = new PopupBuilder(getContext());
-                dialog.newItem(false,listId, 0, userStoreId).show();
+                dialog.newItem(false,listId, 0, userStoreId, 0).show();
 
             }
         });
@@ -105,26 +125,29 @@ public class CategoryFragment extends Fragment{
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
-
-
+        List<List<String>> arr_lists = new ArrayList<List<String>>();
 
 
         CategoryImpl header_dao = new CategoryImpl(getContext() , new Category());
+        ItemImpl child_dao = new ItemImpl(new Item(), getContext());
+
+
+        System.out.println("Item Size: " + child_dao.readByCatId(1));
 
         for(Category temp : header_dao.readById(listId)){
 
-            listDataHeader.add(temp.getName());
 
-            listDataChild.put(listDataHeader.get(i), top250); // Header, Child data
+            List<String> arr_list2 = new ArrayList<>();
+            arr_lists.add(arr_list2);
+
+            for(Item listTemp : child_dao.readByCatId( temp.getId())) {
+
+                    arr_lists.get(i).add(listTemp.getId() + " - " + listTemp.getName() + " - " + listTemp.getPrice()  + " - " + listTemp.getQty() + " - " + listTemp.getIsle());
+
+            }
+
+            listDataHeader.add(temp.getName());
+            listDataChild.put(listDataHeader.get(i), arr_lists.get(i)); // Header, Child data
 
             i++;
         }

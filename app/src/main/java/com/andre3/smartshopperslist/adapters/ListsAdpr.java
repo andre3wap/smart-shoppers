@@ -12,12 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andre3.smartshopperslist.R;
+import com.andre3.smartshopperslist.model.Item;
 import com.andre3.smartshopperslist.model.Lists;
 import com.andre3.smartshopperslist.model.Store;
+import com.andre3.smartshopperslist.services.ItemImpl;
 import com.andre3.smartshopperslist.services.ListImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
 import com.andre3.smartshopperslist.views.PopupBuilder;
 import com.andre3.smartshopperslist.views.StoreEditFragment;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,13 +82,16 @@ public class ListsAdpr extends BaseAdapter {
             public void onClick(View v) {
                 dialog.setLv(getLv());
                 dialog.newList(true, lists.get(position).getId(), 0).show();
-                System.out.println("Clicked: " +  lists.get(position).getName());
             }
         });
 
+        ItemImpl dao = new ItemImpl(new Item(), context);
 
         TextView lists_tv = (TextView)v.findViewById(R.id.lists_tv);
+        TextView list_itm_count = (TextView)v.findViewById(R.id.list_itm_count);
+
         lists_tv.setText(lists.get(position).getName());
+        list_itm_count.setText("( " +dao.readByListId(lists.get(position).getId()).size()+ " / " +dao.readByListIdAll(lists.get(position).getId()).size()+" )");
 
 
         return v;

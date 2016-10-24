@@ -1,7 +1,9 @@
 package com.andre3.smartshopperslist;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -92,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt("default_storeId", Integer.parseInt(active_store[0].trim()));
                 editor.putString("default_store", active_store[1]);
                 editor.commit();
+
+                MainFragment fr = new MainFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_edit").addToBackStack(null).commit();
+
 
             }
 

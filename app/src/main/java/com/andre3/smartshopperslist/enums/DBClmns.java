@@ -16,6 +16,7 @@ public enum  DBClmns {
     catId,
     reminder,
     time,
-    listId
+    listId,
+    inCart,
 }
 
