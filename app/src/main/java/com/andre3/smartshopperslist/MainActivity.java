@@ -3,8 +3,10 @@ package com.andre3.smartshopperslist;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.andre3.smartshopperslist.model.Store;
 import com.andre3.smartshopperslist.services.CategoryImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
 import com.andre3.smartshopperslist.views.CatEditFragment;
+import com.andre3.smartshopperslist.views.OptionsFragment;
 import com.andre3.smartshopperslist.views.StoreEditFragment;
 import com.andre3.smartshopperslist.views.MainFragment;
 import com.andre3.smartshopperslist.views.PopupBuilder;
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         MainFragment fr = new MainFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
@@ -113,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.action_add_store) {
             pb.setDialogTitle("Create Store");
             pb.newStore(false, false, 0).show();
@@ -124,6 +129,21 @@ public class MainActivity extends AppCompatActivity {
             StoreEditFragment fr = new StoreEditFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_edit").addToBackStack(null).commit();
 
+            return true;
+        }if(id == R.id.action_options){
+
+            OptionsFragment fr = new OptionsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_options").addToBackStack(null).commit();
+
+            return true;
+        }
+        if(id ==  16908332){
+            if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+                //TODO: find a better way, bad practice.
+                this.finishAffinity();
+            }else {
+                getSupportFragmentManager().popBackStackImmediate();
+            }
             return true;
         }
 

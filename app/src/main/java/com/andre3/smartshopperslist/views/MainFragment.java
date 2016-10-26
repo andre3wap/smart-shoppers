@@ -44,14 +44,16 @@ public class MainFragment extends Fragment {
 
         forceShowActionBarOverflowMenu();
 
+
+        //Load fragment and display shopping lists
+        View view = inflater.inflate(R.layout.content_main, container, false);
+
         //Get user's default storeId
         SharedPreferences prefs = getContext().getSharedPreferences("myPrefs", MODE_PRIVATE);
         final SharedPreferences.Editor editor = getContext().getSharedPreferences("myPrefs", MODE_PRIVATE).edit();
 
          final int userStoreId = prefs.getInt("default_storeId", 0);
 
-        //Load fragment and display shopping lists
-        View view = inflater.inflate(R.layout.content_main, container, false);
         lv = (ListView)view.findViewById(R.id.list_name_lv);
 
         dao  = new ListImpl(getContext(), new Lists() );
