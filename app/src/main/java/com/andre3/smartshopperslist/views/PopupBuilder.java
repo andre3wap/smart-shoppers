@@ -40,6 +40,10 @@ import com.andre3.smartshopperslist.tools.DatePickerFrg;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by andre3 on 10/13/16.
  */
@@ -320,7 +324,24 @@ public class PopupBuilder extends AppCompatActivity {
                         long id = dao.save();
                     }
 
+                    // Passing reminder date to AlarmManager
+                    if(list_rem_tv.getText().toString()!= "None"){
 
+                        String myTime = "07:00";
+                        String myDate = list_rem_tv.getText().toString();
+
+                        String toParse = myDate + " " + myTime; // Results in "2-5-2012 07:00"
+                        SimpleDateFormat formatter = new SimpleDateFormat("M-d-yyyy hh:mm"); // I assume d-M, you may refer to M-d for month-day instead.
+                        Date date = null; // You will need try/catch around this
+                        try {
+                            date = formatter.parse(toParse);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        long millis = date.getTime();
+
+                        System.out.println("Milli" + millis);
+                    }
                     MainFragment fr = new MainFragment();
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
 

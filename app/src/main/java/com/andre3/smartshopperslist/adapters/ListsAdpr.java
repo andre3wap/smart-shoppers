@@ -1,7 +1,10 @@
 package com.andre3.smartshopperslist.adapters;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +22,16 @@ import com.andre3.smartshopperslist.model.Store;
 import com.andre3.smartshopperslist.services.ItemImpl;
 import com.andre3.smartshopperslist.services.ListImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
+import com.andre3.smartshopperslist.tools.NotifyReceiver;
 import com.andre3.smartshopperslist.views.PopupBuilder;
 import com.andre3.smartshopperslist.views.StoreEditFragment;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.Inflater;
 

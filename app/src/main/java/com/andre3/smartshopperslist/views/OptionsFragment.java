@@ -23,5 +23,4 @@ public class OptionsFragment extends Fragment {
 
         return view;
     }
-
 }
