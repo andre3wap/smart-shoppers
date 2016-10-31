@@ -306,6 +306,7 @@ public class PopupBuilder extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                ///COMMENT
                 if(list_name_et.getText().toString().isEmpty()){
 
                     Toast.makeText(context, "Field should not be left blank", Toast.LENGTH_LONG).show();
