@@ -132,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }if(id == R.id.action_options){
 
-            OptionsFragment fr = new OptionsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_options").addToBackStack(null).commit();
+            ///OptionsFragment fr = new OptionsFragment();
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_options").addToBackStack(null).commit();
 
             return true;
         }

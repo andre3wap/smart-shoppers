@@ -5,6 +5,6 @@
     <string name="action_edit_cat">Manage Categories</string>
     <string name="action_add_store">Add Store</string>
     <string name="action_edit_store">Edit Store</string>
-    <string name="action_edit_options">Options Store</string>
+    <string name="action_edit_options">Preference</string>
 
 </resources>
