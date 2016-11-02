@@ -38,9 +38,11 @@ public class DatePickerFrg extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
+
+        System.out.println(month);
         // Do something with the date chosen by the user
         TextView list_rem_tv = (TextView)dialog.findViewById(R.id.list_rem_tv);
-        list_rem_tv.setText(month+"/"+day+"/"+year);
+        list_rem_tv.setText(month+1+"/"+day+"/"+year);
     }
 
 

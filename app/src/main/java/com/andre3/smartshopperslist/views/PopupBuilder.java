@@ -1,6 +1,8 @@
 package com.andre3.smartshopperslist.views;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,12 +39,14 @@ import com.andre3.smartshopperslist.services.ItemImpl;
 import com.andre3.smartshopperslist.services.ListImpl;
 import com.andre3.smartshopperslist.services.StoreImpl;
 import com.andre3.smartshopperslist.tools.DatePickerFrg;
+import com.andre3.smartshopperslist.tools.NotifyReceiver;
 
 import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by andre3 on 10/13/16.
@@ -328,20 +332,28 @@ public class PopupBuilder extends AppCompatActivity {
                     // Passing reminder date to AlarmManager
                     if(list_rem_tv.getText().toString()!= "None"){
 
-                        String myTime = "07:00";
+                        String myTime = "11:55";
                         String myDate = list_rem_tv.getText().toString();
 
                         String toParse = myDate + " " + myTime; // Results in "2-5-2012 07:00"
-                        SimpleDateFormat formatter = new SimpleDateFormat("M-d-yyyy hh:mm"); // I assume d-M, you may refer to M-d for month-day instead.
+                        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm"); // I assume d-M, you may refer to M-d for month-day instead.
+
+                        // TODO: Grab devices Locale
                         Date date = null; // You will need try/catch around this
                         try {
                             date = formatter.parse(toParse);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
+
                         long millis = date.getTime();
 
-                        System.out.println("Milli" + millis);
+                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); //Please note that context is "this" if you are inside an Activity
+
+                        Intent intent = new Intent(context, NotifyReceiver.class);
+                        PendingIntent event = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, millis, event);
+
                     }
                     MainFragment fr = new MainFragment();
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
