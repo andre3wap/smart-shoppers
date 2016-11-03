@@ -96,6 +96,28 @@ public class PopupBuilder extends AppCompatActivity {
 
     /********** Custom dialogs below ************/
 
+    public Dialog newListInfo(){
+        final Dialog dialog = new Dialog(this.context);
+        dialog.setContentView(R.layout.info_list);
+
+        return dialog;
+    }
+
+    public Dialog newCatInfo(){
+        final Dialog dialog = new Dialog(this.context);
+        dialog.setContentView(R.layout.info_cat);
+
+        return dialog;
+
+        // Fire this one, then after the user clicks OK, fire the New Item info popup
+    }
+    public Dialog newItemInfo(){
+        final Dialog dialog = new Dialog(this.context);
+        dialog.setContentView(R.layout.info_item);
+
+        return dialog;
+    }
+
     public Dialog newItem(final boolean updateData, final int listId, final int catId,  final int storeId, final int id){
         final Dialog dialog = new Dialog(this.context,  R.style.DialogTheme);
         dialog.setContentView(R.layout.item_new_dialog);
@@ -310,7 +332,6 @@ public class PopupBuilder extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ///COMMENT
                 if(list_name_et.getText().toString().isEmpty()){
 
                     Toast.makeText(context, "Field should not be left blank", Toast.LENGTH_LONG).show();
@@ -335,7 +356,7 @@ public class PopupBuilder extends AppCompatActivity {
                         System.out.println("text here" + list_rem_tv.getText().toString().trim());
                     }else{
 
-                        String myTime = "11:55";
+                        String myTime = "01:25";
                         String myDate = list_rem_tv.getText().toString();
 
                         String toParse = myDate + " " + myTime; // Results in "2-5-2012 07:00"
@@ -353,9 +374,12 @@ public class PopupBuilder extends AppCompatActivity {
 
                         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); //Please note that context is "this" if you are inside an Activity
 
+
                         Intent intent = new Intent(context, NotifyReceiver.class);
                         PendingIntent event = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                        alarmManager.cancel(event);
                         alarmManager.set(AlarmManager.RTC_WAKEUP, millis, event);
+
 
                     }
                     MainFragment fr = new MainFragment();
