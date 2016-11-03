@@ -75,7 +75,7 @@ public class MainFragment extends Fragment {
                 editor.putInt("active_listId", dao.readByStoreId(userStoreId).get(position).getId() );
                 editor.apply();
 
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter, R.anim.exit).replace(R.id.fragment_container, fr).addToBackStack(null).commit();
 
             }
         });

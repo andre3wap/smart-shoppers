@@ -16,9 +16,15 @@
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/CustomDialogAnimation</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="CustomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_right</item>
+    </style>
 
 </resources>

@@ -317,7 +317,7 @@ public class PopupBuilder extends AppCompatActivity {
 
                 }else {
 
-                   lists.setName(list_name_et.getText().toString());
+                    lists.setName(list_name_et.getText().toString());
                     lists.setReminder(list_rem_tv.getText().toString());
                     lists.setStoreId(storeId);
                     lists.setId(listId);
@@ -330,7 +330,10 @@ public class PopupBuilder extends AppCompatActivity {
                     }
 
                     // Passing reminder date to AlarmManager
-                    if(list_rem_tv.getText().toString()!= "None"){
+                    if(list_rem_tv.getText().toString().trim().equals("None")) {
+
+                        System.out.println("text here" + list_rem_tv.getText().toString().trim());
+                    }else{
 
                         String myTime = "11:55";
                         String myDate = list_rem_tv.getText().toString();

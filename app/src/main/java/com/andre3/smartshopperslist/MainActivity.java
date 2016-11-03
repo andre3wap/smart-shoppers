@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.commit();
 
                 MainFragment fr = new MainFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_edit").addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter, R.anim.exit).replace(R.id.fragment_container, fr, "store_edit").addToBackStack(null).commit();
 
 
             }
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_edit_store) {
 
             StoreEditFragment fr = new StoreEditFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr, "store_edit").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter, R.anim.exit).replace(R.id.fragment_container, fr, "store_edit").addToBackStack(null).commit();
 
             return true;
         }if(id == R.id.action_options){

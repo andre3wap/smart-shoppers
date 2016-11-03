@@ -231,7 +231,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
 
                 CatEditFragment fr = new CatEditFragment();
-                ((FragmentActivity) _context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack("test_back").commit();
+                ((FragmentActivity) _context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter, R.anim.exit).replace(R.id.fragment_container, fr).addToBackStack("test_back").commit();
 
             }
         });

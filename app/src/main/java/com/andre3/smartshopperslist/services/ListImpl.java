@@ -5,14 +5,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.andre3.smartshopperslist.R;
 import com.andre3.smartshopperslist.dao.DBManager;
 import com.andre3.smartshopperslist.enums.DBClmns;
 import com.andre3.smartshopperslist.enums.DBTables;
 import com.andre3.smartshopperslist.model.Item;
 import com.andre3.smartshopperslist.model.Lists;
+import com.andre3.smartshopperslist.views.MainFragment;
 
 import java.util.ArrayList;
 
@@ -167,16 +170,19 @@ public class ListImpl {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                        // Hard delete
+                        // Hard delete list
                         delete(listId);
 
                         // Soft delete items
                         Item item = new Item();
                         item.setListId(listId);
                         final ItemImpl itemDao = new ItemImpl(item, context);
-                        itemDao.softDelete();
+                        long id = itemDao.softDelete();
 
-                        Toast.makeText(context, "Your list and all associated data were deleted." , Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Your list and all associated data were deleted." , Toast.LENGTH_LONG).show();
+
+                            MainFragment fr = new MainFragment();
+                            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fr).addToBackStack(null).commit();
                     }
                 });
 
