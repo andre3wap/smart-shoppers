@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -61,6 +62,7 @@ public class PopupBuilder extends AppCompatActivity {
     EditText price_et, isle_et, qty_et, unit_et, list_rem_et;
     Spinner spinner2, unit_sp;
     Button store_btn, list_btn, list_del_btn, cat_btn, item_save_btn, list_rem_btn;
+    Button info_cat_btn, info_item_btn, info_list_btn;
     ListView lv;
     TextView list_rem_tv;
     BaseAdapter adapter;
@@ -100,20 +102,44 @@ public class PopupBuilder extends AppCompatActivity {
         final Dialog dialog = new Dialog(this.context);
         dialog.setContentView(R.layout.info_list);
 
+        info_list_btn = (Button)dialog.findViewById(R.id.info_list_btn);
+        info_list_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                /// When the user clicks Okay Got it, save he value to prevent the popup from showing again.
+                SharedPreferences prefs = context.getSharedPreferences("myPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = context.getSharedPreferences("myPrefs", MODE_PRIVATE).edit();
+
+                editor.putBoolean("list_info", true);
+
+
+                dialog.dismiss();
+            }
+        });
+
         return dialog;
     }
 
     public Dialog newCatInfo(){
         final Dialog dialog = new Dialog(this.context);
         dialog.setContentView(R.layout.info_cat);
+        // Exhibits info for New categories and New Items.
 
-        return dialog;
+        info_cat_btn = (Button)dialog.findViewById(R.id.info_cat_btn);
+        info_cat_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        // Fire this one, then after the user clicks OK, fire the New Item info popup
-    }
-    public Dialog newItemInfo(){
-        final Dialog dialog = new Dialog(this.context);
-        dialog.setContentView(R.layout.info_item);
+                /// When the user clicks Okay Got it, save he value to prevent the popup from showing again.
+                SharedPreferences prefs = context.getSharedPreferences("myPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = context.getSharedPreferences("myPrefs", MODE_PRIVATE).edit();
+
+                editor.putBoolean("cat_info", true);
+
+                dialog.dismiss();
+            }
+        });
 
         return dialog;
     }
